@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Font Identification Game</title>
 
-  <!-- Tailwind CDN for quick styling -->
+  <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Include fonts that the game references -->
+  <!-- Google Fonts used inside the game -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400&display=swap" rel="stylesheet">
@@ -21,130 +21,105 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap" rel="stylesheet">
 
   <style>
-    /* small helper to show disabled button cursor */
     button[disabled] { cursor: not-allowed; opacity: 0.95; }
   </style>
 </head>
-<body class="min-h-screen bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center p-4">
 
+<body
+  class="min-h-screen flex items-center justify-center p-4"
+  style="
+    background-image: url('what the font bg.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  "
+>
   <div id="root" class="w-full max-w-4xl"></div>
 
-  <!-- React & ReactDOM (UMD builds) -->
+  <!-- React + ReactDOM -->
   <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
 
-  <!-- Babel so we can write JSX in the browser (convenient for single-file demos) -->
+  <!-- Babel for JSX -->
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-  <!-- App code (JSX) -->
+  <!-- Game Code -->
   <script type="text/babel">
     const { useState, useEffect } = React;
 
     const fonts = [
-      { name: 'Helvetica', css: 'Helvetica, Arial, sans-serif', cdn: null },
-      { name: 'Arial', css: 'Arial, sans-serif', cdn: null },
-      { name: 'Times New Roman', css: '"Times New Roman", Times, serif', cdn: null },
-      { name: 'Roboto', css: '"Roboto", sans-serif', cdn: 'https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap' },
-      { name: 'Futura', css: 'Futura, "Trebuchet MS", sans-serif', cdn: null },
-      { name: 'Garamond', css: '"EB Garamond", Garamond, serif', cdn: 'https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400&display=swap' },
-      { name: 'Montserrat', css: '"Montserrat", sans-serif', cdn: 'https://fonts.googleapis.com/css2?family=Montserrat:wght@400&display=swap' },
-      { name: 'Open Sans', css: '"Open Sans", sans-serif', cdn: 'https://fonts.googleapis.com/css2?family=Open+Sans:wght@400&display=swap' },
-      { name: 'Proxima Nova', css: '"Proxima Nova", "Helvetica Neue", sans-serif', cdn: null },
-      { name: 'Calibri', css: 'Calibri, sans-serif', cdn: null },
-      { name: 'Georgia', css: 'Georgia, serif', cdn: null },
-      { name: 'Avenir', css: 'Avenir, "Century Gothic", sans-serif', cdn: null },
-      { name: 'Inter', css: '"Inter", sans-serif', cdn: 'https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap' },
-      { name: 'Lato', css: '"Lato", sans-serif', cdn: 'https://fonts.googleapis.com/css2?family=Lato:wght@400&display=swap' },
-      { name: 'Baskerville', css: '"Libre Baskerville", Baskerville, serif', cdn: 'https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400&display=swap' },
-      { name: 'Source Sans Pro', css: '"Source Sans 3", sans-serif', cdn: 'https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400&display=swap' },
-      { name: 'Nunito', css: '"Nunito", sans-serif', cdn: 'https://fonts.googleapis.com/css2?family=Nunito:wght@400&display=swap' },
-      { name: 'SF Pro', css: '"SF Pro Display", -apple-system, BlinkMacSystemFont, sans-serif', cdn: null },
-      { name: 'Poppins', css: '"Poppins", sans-serif', cdn: 'https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap' },
-      { name: 'Century Gothic', css: '"Century Gothic", "Apple Gothic", sans-serif', cdn: null }
+      { name: 'Helvetica', css: 'Helvetica, Arial, sans-serif' },
+      { name: 'Arial', css: 'Arial, sans-serif' },
+      { name: 'Times New Roman', css: '"Times New Roman", Times, serif' },
+      { name: 'Roboto', css: '"Roboto", sans-serif', cdn: true },
+      { name: 'Futura', css: 'Futura, "Trebuchet MS", sans-serif' },
+      { name: 'Garamond', css: '"EB Garamond", Garamond, serif', cdn: true },
+      { name: 'Montserrat', css: '"Montserrat", sans-serif', cdn: true },
+      { name: 'Open Sans', css: '"Open Sans", sans-serif', cdn: true },
+      { name: 'Proxima Nova', css: '"Proxima Nova", "Helvetica Neue", sans-serif' },
+      { name: 'Calibri', css: 'Calibri, sans-serif' },
+      { name: 'Georgia', css: 'Georgia, serif' },
+      { name: 'Avenir', css: 'Avenir, "Century Gothic", sans-serif' },
+      { name: 'Inter', css: '"Inter", sans-serif', cdn: true },
+      { name: 'Lato', css: '"Lato", sans-serif', cdn: true },
+      { name: 'Baskerville', css: '"Libre Baskerville", Baskerville, serif', cdn: true },
+      { name: 'Source Sans Pro', css: '"Source Sans 3", sans-serif', cdn: true },
+      { name: 'Nunito', css: '"Nunito", sans-serif', cdn: true },
+      { name: 'SF Pro', css: '"SF Pro Display", -apple-system, BlinkMacSystemFont, sans-serif' },
+      { name: 'Poppins', css: '"Poppins", sans-serif', cdn: true },
+      { name: 'Century Gothic', css: '"Century Gothic", "Apple Gothic", sans-serif' }
     ];
 
     const ROUNDS = 10;
     const SAMPLE_TEXT = "The quick brown fox jumps over the lazy dog";
 
-    function IconTrophy() {
-      // simple trophy emoji / accessible fallback
-      return (<span aria-hidden="true" style={{fontSize: '1.6rem'}}>🏆</span>);
-    }
-    function IconShare() {
-      return (<span aria-hidden="true" style={{fontSize: '1rem'}}>🔗</span>);
-    }
-    function IconRefresh() {
-      return (<span aria-hidden="true" style={{fontSize: '1rem'}}>🔄</span>);
-    }
+    function IconTrophy() { return <span style={{ fontSize: "1.6rem" }}>🏆</span>; }
+    function IconShare() { return <span style={{ fontSize: "1.2rem" }}>🔗</span>; }
+    function IconRefresh() { return <span style={{ fontSize: "1.2rem" }}>🔄</span>; }
 
     function FontGame() {
       const [currentRound, setCurrentRound] = useState(0);
       const [score, setScore] = useState(0);
-      const [gameState, setGameState] = useState('playing');
+      const [gameState, setGameState] = useState("playing");
       const [currentFont, setCurrentFont] = useState(null);
       const [options, setOptions] = useState([]);
       const [selectedAnswer, setSelectedAnswer] = useState(null);
-      const [feedback, setFeedback] = useState('');
+      const [feedback, setFeedback] = useState("");
       const [usedFonts, setUsedFonts] = useState([]);
       const [fontsLoaded, setFontsLoaded] = useState(false);
 
       useEffect(() => {
-        // Load fonts that need CDN (some are already in head, but this ensures uniqueness)
-        const fontLinks = fonts.filter(f => f.cdn).map(f => f.cdn);
-        const uniqueLinks = [...new Set(fontLinks)];
-        uniqueLinks.forEach(link => {
-          const existingLink = document.querySelector(`link[href="${link}"]`);
-          if (!existingLink) {
-            const linkElement = document.createElement('link');
-            linkElement.href = link;
-            linkElement.rel = 'stylesheet';
-            document.head.appendChild(linkElement);
-          }
-        });
-
-        // Give fonts time to load
-        const t = setTimeout(() => setFontsLoaded(true), 500);
-        return () => clearTimeout(t);
+        setTimeout(() => setFontsLoaded(true), 500);
       }, []);
 
       useEffect(() => {
-        if (gameState === 'playing' && fontsLoaded) {
-          setupRound();
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        if (gameState === "playing" && fontsLoaded) setupRound();
       }, [currentRound, gameState, fontsLoaded]);
 
       const setupRound = () => {
-        const availableFonts = fonts.filter(f => !usedFonts.includes(f.name));
-        // if we ran out (rare), reset usedFonts
-        const pool = availableFonts.length ? availableFonts : fonts;
-        const correctFont = pool[Math.floor(Math.random() * pool.length)];
+        const available = fonts.filter(f => !usedFonts.includes(f.name));
+        const correct = available[Math.floor(Math.random() * available.length)];
 
-        const wrongFonts = fonts
-          .filter(f => f.name !== correctFont.name)
+        const wrong = fonts
+          .filter(f => f.name !== correct.name)
           .sort(() => Math.random() - 0.5)
           .slice(0, 3);
 
-        const allOptions = [correctFont, ...wrongFonts].sort(() => Math.random() - 0.5);
+        const allOptions = [correct, ...wrong].sort(() => Math.random() - 0.5);
 
-        setCurrentFont(correctFont);
+        setCurrentFont(correct);
         setOptions(allOptions);
         setSelectedAnswer(null);
-        setFeedback('');
-        setUsedFonts(prev => {
-          const next = [...prev, correctFont.name];
-          // keep it bounded
-          if (next.length > fonts.length) return next.slice(-fonts.length);
-          return next;
-        });
+        setFeedback("");
+        setUsedFonts([...usedFonts, correct.name]);
       };
 
-      const handleAnswer = (selectedFont) => {
-        setSelectedAnswer(selectedFont.name);
+      const handleAnswer = (font) => {
+        setSelectedAnswer(font.name);
 
-        if (selectedFont.name === currentFont.name) {
+        if (font.name === currentFont.name) {
           setScore(s => s + 1);
-          setFeedback('✓ Correct!');
+          setFeedback("✓ Correct!");
         } else {
           setFeedback(`✗ Wrong! It was ${currentFont.name}`);
         }
@@ -153,7 +128,7 @@
           if (currentRound + 1 < ROUNDS) {
             setCurrentRound(r => r + 1);
           } else {
-            setGameState('finished');
+            setGameState("finished");
           }
         }, 1200);
       };
@@ -161,70 +136,58 @@
       const restartGame = () => {
         setCurrentRound(0);
         setScore(0);
-        setGameState('playing');
+        setGameState("playing");
         setUsedFonts([]);
       };
 
       const shareScore = () => {
-        const percentage = Math.round((score / ROUNDS) * 100);
-        const text = `I scored ${score}/${ROUNDS} (${percentage}%) on the Font Identification Game! Can you beat my score?`;
+        const pct = Math.round((score / ROUNDS) * 100);
+        const text = `I scored ${score}/${ROUNDS} (${pct}%) on the Font Identification Game!`;
         const url = window.location.href;
-        const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+
+        const twitter = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
 
         if (navigator.share) {
-          navigator.share({
-            title: 'Font Identification Game',
-            text,
-            url
-          }).catch(() => {
-            window.open(twitterUrl, '_blank', 'width=550,height=420');
-          });
+          navigator.share({ title: "Font Game", text, url })
+                 .catch(() => window.open(twitter));
         } else {
-          window.open(twitterUrl, '_blank', 'width=550,height=420');
+          window.open(twitter);
         }
       };
 
       if (!fontsLoaded) {
         return (
-          <div className="min-h-screen flex items-center justify-center">
-            <div className="bg-white rounded-2xl shadow-2xl p-8 text-center">
-              <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-purple-600 mx-auto mb-4"></div>
-              <p className="text-gray-600 font-semibold">Loading fonts...</p>
-            </div>
+          <div className="bg-white rounded-2xl shadow-2xl p-8 text-center">
+            <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-600 mx-auto mb-4"></div>
+            <p className="text-gray-600 font-semibold">Loading fonts...</p>
           </div>
         );
       }
 
-      if (gameState === 'finished') {
-        const percentage = Math.round((score / ROUNDS) * 100);
+      if (gameState === "finished") {
+        const pct = Math.round((score / ROUNDS) * 100);
+
         return (
-          <div className="min-h-screen bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center p-4">
+          <div className="min-h-screen flex items-center justify-center p-4">
             <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full text-center">
-              <div className="w-20 h-20 mx-auto mb-4 text-yellow-500 flex items-center justify-center">
-                <IconTrophy />
-              </div>
+              <div className="w-20 h-20 mx-auto mb-4 flex items-center justify-center"><IconTrophy /></div>
+
               <h1 className="text-3xl font-bold mb-4 text-gray-800">Game Over!</h1>
-              <div className="mb-6">
-                <p className="text-6xl font-bold text-purple-600 mb-2">{score}/{ROUNDS}</p>
-                <p className="text-xl text-gray-600">{percentage}% Correct</p>
-                <p className="text-lg text-gray-500 mt-2">
-                  {percentage === 100 ? '🎉 Perfect Score!' :
-                   percentage >= 80 ? '🌟 Excellent!' :
-                   percentage >= 60 ? '👍 Good Job!' :
-                   percentage >= 40 ? '📚 Keep Practicing!' :
-                   '💪 Try Again!'}
-                </p>
-              </div>
-              <div className="space-y-3">
+
+              <p className="text-6xl font-bold text-blue-600 mb-2">{score}/{ROUNDS}</p>
+              <p className="text-xl text-gray-600">{pct}% Correct</p>
+
+              <div className="space-y-3 mt-6">
                 <button
                   onClick={shareScore}
-                  className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2 transition"
+                  className="w-full bg-[#1E68C7] hover:bg-[#1556A5] text-white font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2"
                 >
-                  <IconShare /> Share on Twitter
+                  <IconShare /> Share Score
                 </button>
+
                 <button
                   onClick={restartGame}
-                  className="w-full bg-purple-500 hover:bg-purple-600 text-white font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2 transition"
+                  className="w-full bg-[#1E68C7] hover:bg-[#1556A5] text-white font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2"
                 >
                   <IconRefresh /> Play Again
                 </button>
@@ -235,70 +198,59 @@
       }
 
       return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center p-4">
+        <div className="min-h-screen flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-2xl w-full">
-            <div className="flex justify-between items-center mb-6">
-              <div className="text-sm font-semibold text-gray-600">
-                Round {currentRound + 1}/{ROUNDS}
-              </div>
-              <div className="text-sm font-semibold text-gray-600">
-                Score: {score}/{currentRound}
-              </div>
+
+            <div className="flex justify-between mb-6 text-gray-600 font-semibold">
+              <span>Round {currentRound + 1}/{ROUNDS}</span>
+              <span>Score: {score}/{currentRound}</span>
             </div>
 
-            <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
-              What font is this?
-            </h2>
+            <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">What font is this?</h2>
 
-            {currentFont && (
-              <div className="mb-8 p-6 bg-gray-50 rounded-xl border-2 border-gray-200">
-                <p
-                  style={{ fontFamily: currentFont.css }}
-                  className="text-4xl text-center text-gray-800 leading-relaxed"
-                >
-                  {SAMPLE_TEXT}
-                </p>
-              </div>
-            )}
+            <div className="mb-8 p-6 bg-gray-50 rounded-xl border-2 border-gray-200">
+              <p style={{ fontFamily: currentFont?.css }} className="text-4xl text-center leading-relaxed">
+                {SAMPLE_TEXT}
+              </p>
+            </div>
 
             {feedback && (
-              <div className={`mb-4 p-3 rounded-lg text-center font-semibold ${
-                feedback.includes('✓') ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+              <div className={`mb-4 p-3 text-center font-semibold rounded-lg ${
+                feedback.includes("✓")
+                  ? "bg-green-100 text-green-700"
+                  : "bg-red-100 text-red-700"
               }`}>
                 {feedback}
               </div>
             )}
 
             <div className="grid grid-cols-2 gap-4">
-              {options.map((font) => (
+              {options.map(font => (
                 <button
                   key={font.name}
                   onClick={() => handleAnswer(font)}
                   disabled={selectedAnswer !== null}
                   className={`p-4 rounded-lg font-semibold text-lg transition ${
                     selectedAnswer === null
-                      ? 'bg-purple-500 hover:bg-purple-600 text-white'
+                      ? "bg-[#1E68C7] hover:bg-[#1556A5] text-white"
                       : selectedAnswer === font.name
-                      ? font.name === currentFont.name
-                        ? 'bg-green-500 text-white'
-                        : 'bg-red-500 text-white'
-                      : font.name === currentFont.name
-                      ? 'bg-green-500 text-white'
-                      : 'bg-gray-300 text-gray-500'
-                  } disabled:cursor-not-allowed`}
+                        ? (font.name === currentFont.name ? "bg-green-500 text-white" : "bg-red-500 text-white")
+                        : font.name === currentFont.name
+                          ? "bg-green-500 text-white"
+                          : "bg-gray-300 text-gray-500"
+                  }`}
                 >
                   {font.name}
                 </button>
               ))}
             </div>
+
           </div>
         </div>
       );
     }
 
-    // Render
-    const root = ReactDOM.createRoot(document.getElementById('root'));
-    root.render(<FontGame />);
+    ReactDOM.createRoot(document.getElementById("root")).render(<FontGame />);
   </script>
 </body>
 </html>
